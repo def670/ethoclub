@@ -1,0 +1,39 @@
+<br><br>
+ <br> <div class="container"><h5 class="note note-info text-left">
+    <p class="lead">Pool always pay tx fees from it's own pocket for now.</p>
+    <strong>Total payments sent:</strong> <span class="label label-info">{{model.paymentsTotal}}</span><br><br>
+ 
+
+ {{#if model.payments}}
+  <h4>Latest Payouts</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Amount</th>
+          <th>Address</th>
+          <th>Tx ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model.payments as |tx|}}
+          <tr>
+            <td>{{format-date-locale tx.timestamp}}</td>
+            <td>{{format-number tx.formatAmount}}</td>
+            <td>
+              <a href="https://blocks.ethoprotocol.com/address/{{tx.address}}" class="hash" rel="nofollow" target="_blank">{{tx.address}}</a>
+            </td>
+            <td>
+              <a href="https://blocks.ethoprotocol.com/tx/{{tx.tx}}" class="hash" rel="nofollow" target="_blank">{{format-tx tx.tx}}</a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{else}}
+  <h3>No payouts yet</h3>
+  {{/if}}
+</h5></div>
+<br><br><br>

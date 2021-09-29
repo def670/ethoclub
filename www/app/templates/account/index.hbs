@@ -1,0 +1,48 @@
+<div class="container">
+ <h5 class="note note-info text-left">
+  {{#if model.workers}}
+  <h4>Your Workers</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>WorkerID</th> 
+          <th>Hashrate(rough, short average)(30M)</th>
+          <th>Hashrate(accurate, long average)(3H)</th>
+          <th></th>
+          <th>Last Share</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each-in model.workers as |k v|}}
+          <tr class="{{if v.offline "warning" "success"}}">
+            <td>{{k}}</td>
+            <td>{{format-hashrate v.hr}}</td>
+            <td>{{format-hashrate v.hr2}}</td>
+            <td></td>
+            <td>{{format-relative (seconds-to-ms v.lastBeat)}}</td>
+          </tr>
+        {{/each-in}}
+      </tbody>
+    </table>
+  </div>
+  {{else}}
+    <h3>No workers online</h3>
+  {{/if}}
+  
+   {{#if config.highcharts.account.enabled}}
+    {{high-charts mode=chartMode chartOptions=chartOptions content=chartData}}
+  {{/if}}
+ <br>
+   <div class="container">
+    <span class="sr-only">Notice:</span>
+    Your average hashrate will be smoothly adjusted until you have shares to fullfill estimation window.<br/>
+    There are two windows, long and short, first is equal to about 30 minutes and long window is usually equal to 3 hours.<br/>
+    Dead (sick) workers will be highlighted in a table of workers if they didn't submit a share for 1/2 of short window,
+    so you can perform maintenance of your rigs.
+  </div><br>
+  <div class="container">
+    <strong>Your bulk stats JSON API URL:</strong> <a href="/api/accounts/{{model.login}}">/api/accounts/{{model.login}}</a>
+  </div></h5>
+<br><p style="text-align:center;"><a href="https://discord.com/invite/ZuKnWgq722" rel="nofollow" target="_blank"><img src="discord2.png"></a></p></div>
+<br><br><br><br>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Etho Mining Pool</title>
+    <meta name="description" content="Etho Mining Pool"/>
+    <meta name="keywords" content="etho, ethoprotocol, ether-1, ethereum, pool, mining, cryptocurrency"/>
+    <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"></script>
+    {{content-for "head"}}
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/open-ethereum-pool.css">
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+    {{content-for "body"}}
+
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/open-ethereum-pool.js"></script>
+
+    {{content-for "body-footer"}}
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Etho Mining Pool &copy;
+          Powered by Linux and <a href="https://github.com/sammy007/open-ethereum-pool" target="_blank">open-ethereum-pool</a> |
+          <strong>Donate ETH/ETHO:</strong>
+          <a href="https://explorer.ether1.org/address/0x525e1ff24be53fcb94f4709acabc6e2315f7d669" rel="nofollow" target="_blank">
+          0x525e1ff24be53fcb94f4709acabc6e2315f7d669
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

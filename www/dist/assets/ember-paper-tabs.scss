@@ -1,0 +1,9 @@
+@import "angular-tabs";
+@import "angular-tabs-theme";
+
+md-pagination-wrapper {
+  width: initial;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}

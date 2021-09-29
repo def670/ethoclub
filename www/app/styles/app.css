@@ -1,0 +1,250 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background: url('/bg.gif');
+  background-size: cover;
+  
+  color: #999999;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 110px;
+  background-color: #000000;
+  color:#ffffff
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body {
+  padding-top: 20px;
+  padding-bottom: 5px;
+}
+
+body > .container {
+  padding: 0px 15px 0;
+  color:#ffffff;
+  
+}
+.container .text-muted {
+  margin: 20px 0;
+  
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.jumbotron {
+	margin: 0;
+	padding: 40px 0 15px 0;
+	margin-bottom: 15px;
+	background: url('/bgtop.gif');
+   
+	color: #999999
+	
+	
+}
+
+code {
+  font-size: 80%;
+}
+
+.navbar-default {
+	background-color: #000000;
+	border-color: #971A44;
+	height: 65px;
+}
+.navbar-default .navbar-brand {
+	color: #000000;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+	color: #ffffff;
+}
+.navbar-default .navbar-text {
+	color: #dadada;
+}
+.navbar-default .navbar-nav > li > a {
+	color: #dadada;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+	color: #ffffff;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	color: #ffffff;
+	background-color: #000000;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+	color: #ffffff;
+	background-color: #69102b;
+}
+.navbar-default .navbar-toggle {
+	border-color: #0a6c9d;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: #000000;
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #000000;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+	border-color: #dadada;
+}
+.navbar-default .navbar-link {
+	color: #dadada;
+}
+.navbar-default .navbar-link:hover {
+	color: #ffffff;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #dadada;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #ffffff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #ffffff;
+		background-color: #000000;
+	}
+}
+
+span.logo-1 {
+	font-weight: 700;
+	color: #1994b8;
+}
+
+span.logo-2 {
+	font-weight: 300;
+	color: #FFF;
+}
+
+span.logo-3 {
+	color: #FFF;
+	font-weight: 100;
+}
+
+.navbar-collapse {
+	font-size: 14px;
+	font-weight: 200;
+}
+
+.note {
+	margin: 0 0 20px 0;
+	padding: 15px 30px 15px 15px;
+	border-left: 0px solid #000;
+	border-radius: 5px;
+}
+
+.note-info {
+	
+	
+}
+
+.note-danger {
+	background-color: #ff9999;
+	border-color: #cc0099;
+}
+
+h4.note {
+	margin-top: 0;
+	font-weight: 300 !important;
+	
+	
+}
+
+h5.note {
+	margin-top: 0;
+	font-weight: 200 !important;
+	border-color: #fff;
+	background-color:#282945;
+	 border: 1px solid #fff;
+	
+	
+}
+
+h6.note {
+	
+	font-weight: 300 !important;
+	
+}
+
+.hash {
+	font-family: 'Inconsolata', monospace;
+}
+
+/* Stats */
+.stats {
+	margin-bottom: 10px;
+	margin-top: 5px;
+   
+	
+}
+.stats:last-child{
+	width: auto;
+}
+.stats > h3 > i {
+	width: 21px;
+}
+.stats > div{
+	padding: 5px 0;
+	
+	  
+}
+.stats > div > .fa {
+	width: 25px;
+}
+.stats > div > span:first-of-type{
+	font-weight: bold;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}

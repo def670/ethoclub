@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+/** A minimal/sample interface for make-plural.js
+ *
+ *  Usage:
+ *    ./bin/make-plural            // checks all locale rules
+ *    ./bin/make-plural [lc]       // prints the locale function for `lc`
+ *    ./bin/make-plural [lc] [v]   // prints the plural category for `v` in locale `lc`
+ */
+
+var MakePlural = require('..');
+
+if (process.argv[2]) {
+	MakePlural.opt = { 'lc':process.argv[2], 'ordinals':1 };
+	if (process.argv[3]) {
+		console.log(MakePlural()(process.argv[3]));
+	} else {
+		console.log(MakePlural().toString(MakePlural.opt.lc));
+	}
+} else {
+	var ok = [];
+	MakePlural.load('./data/unicode-cldr-plural-rules.json');
+	for (var lc in MakePlural.rules['cardinal']) {
+		if (MakePlural(lc, {'ordinals':1})) ok.push(lc);
+		else console.error('Locale "' + lc + '" FAILED\n');
+	}
+	console.log('Locales verified ok:' + ok.join(' ').replace(/(.{1,73})( |$)/g, '\n    $1'));
+}

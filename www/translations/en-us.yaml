@@ -1,0 +1,38 @@
+product:
+  info: '{product} will cost {price, number, USD} if ordered by {deadline, date, time}'
+  title: 'Hello world!'
+  html:
+    info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
+account:
+  immature:
+    balance: Immature Balance
+    description: Preliminary balance awaiting blocks to mature.
+  pending:
+    balance: Pending Balance
+    description: Credited coins awaiting payout.
+  current: Current Payment
+  last_share_submitted: Last Share Submitted
+  online: Workers Online
+  hashrate: Hashrate
+  earnings:
+    perday: Earnings per day
+    short_avg: 1H avg
+  blocks:
+    found: Blocks Found
+  total:
+    payments: Total Payments
+    paid: Total Paid
+  round_share: Your Round Share
+  round_share_description: Percent of your contribution to current round.
+  epoch_switch: Epoch Switch
+  workers: Workers
+  payouts: Payouts
+
+  your_workers: Workers
+  last_share: Last Share
+  short_average: rough, short average
+  long_average: accurate, long average
+  no_workers_online: No workers online
+  notice: Notice
+  notice_html: Your average hashrate will be smoothly adjusted until you have shares to fullfill estimation window.<br/>There are two windows, long and short, first is equal to about 30 minutes and long window is usually equal to 3 hours.<br/>Dead (sick) workers will be highlighted in a table of workers if they didn't submit a share for 1/2 of short window, so you can perform maintenance of your rigs.
+  json_api_url: Your bulk stats JSON API URL

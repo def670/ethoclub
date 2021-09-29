@@ -1,0 +1,63 @@
+{{outlet 'error' }}
+<br><br>
+ <br> <div class="container"><h5 class="note note-info text-left">
+  <div class="container">
+   <h4>Your Stats</h4>
+    <div class="row">
+      <div class="col-md-4 stats">
+        <div style="display: block;">
+          <i class="fa fa-cloud"></i> Immature Balance: <span>{{format-balance model.stats.immature}} {{config.Unit}}</span><br>
+          <small>Preliminary balance awaiting blocks to mature.</small>
+        </div>
+        <div style="display: block;">
+          <i class="fa fa-bank"></i> Pending Balance: <span>{{format-balance model.stats.balance}} {{config.Unit}}</span><br>
+          
+        </div>
+        {{#if model.stats.pending}}
+        <div style="display: block;">
+          <i class="fa fa-clock-o"></i> Current Payment: <span>{{format-balance model.stats.pending}} {{config.Unit}}</span><br>
+        </div>
+        {{/if}}
+        <div style="display: block;"><i class="fa fa-money"></i> Total Paid: <span>{{format-balance model.stats.paid}} {{config.Unit}}</span></div>
+		<div style="display: block;"><i class="fa fa-calculator"></i> Daily Potential: <span>{{format-number (worker-earnperday model.hashrate stat.difficulty)}} {{config.Unit}}</span></div>
+		</div>
+      
+      <div class="col-md-4 stats">
+        {{#if model.stats.lastShare}}
+        <div style="display: block;"><i class="fa fa-hourglass-half"></i>
+          Last Share Submitted: <span>{{format-relative (seconds-to-ms (string-to-int model.stats.lastShare))}}</span>
+        </div>
+        {{/if}}
+        <div style="display: block;"><i class="fa fa-cogs"></i> Workers Online: <span>{{format-number model.workersOnline}}</span></div>
+        <div style="display: block;"><i class="fa fa-tachometer"></i> Hashrate (30m): <span>{{format-hashrate model.currentHashrate}}</span></div>		
+        <div style="display: block;"><i class="fa fa-tachometer"></i> Hashrate (3h): <span>{{format-hashrate model.hashrate}}</span></div>		
+        
+      </div>
+      <div class="col-md-4 stats">
+        <div style="display: block;"><i class="fa fa-tachometer"></i> Blocks Found: <span>{{format-number model.stats.blocksFound fallback='0'}}</span></div>
+        <div style="display: block;"><i class="fa fa-paper-plane-o"></i> Total Payments: <span>{{format-number model.paymentsTotal}}</span></div>
+        <div style="display: block;">
+          <i class="fa fa-percent"></i> Your Round Share: <span>{{format-number roundPercent style='percent' maximumFractionDigits='6'}}</span><br/>
+          <small>Percent of your contribution to current round.</small>
+        </div>
+        <div style="display: block;">
+          <i class="fa fa-hourglass"></i>
+          Epoch Switch: <span>{{format-relative applicationController.nextEpoch units="hour"}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</h5></div>
+
+<div class="container">
+  <ul class="nav nav-tabs">
+    {{#active-li currentWhen='account.index' role='presentation'}}
+      {{#link-to 'account.index'}}Workers <span class="badge alert-success"> {{model.workersOnline}}</span><span class="badge alert-danger">{{model.workersOffline}}</span>{{/link-to}}
+    {{/active-li}}
+    {{#active-li currentWhen='account.payouts' role='presentation'}}
+      {{#link-to 'account.payouts'}}Payouts{{/link-to}}
+    {{/active-li}}
+  </ul>
+</div>
+
+{{outlet}}

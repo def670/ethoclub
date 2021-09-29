@@ -1,0 +1,97 @@
+<br><br><br>
+
+<div class="container">
+
+
+  
+  <h5 class="note note-info text-center">
+ <br> <p style="font-size: 14px"><strong><b>Secure and efficient Etho Protocol mining pool made by miners for miners.</b></strong><br>Payouts are currently processed approximately every 2 hours if threshold is reached. </p>
+
+	</h5>
+    
+ 
+  
+   <table width="100%" border="0">
+   <tr>
+   <td width="30%">
+   <h5 style="font-size: 14px" class="note note-info text-left">
+	<p>
+     <div>
+	        
+        <strong>Pool Stats</strong><br><br>
+        <div><i class="fa fa-users"></i> Miners Online: <span id="poolHashrate">{{format-number stats.model.minersTotal}}</span></div><br>
+        <div><i class="fa fa-tachometer"></i> Pool Hash Rate: <span id="poolHashrate">{{format-hashrate stats.model.hashrate}}</span></div><br>
+        <div><i class="fa fa-money"></i> Pool Fee: <span id="poolFee" class="label label-success">{{config.PoolFee}}</span></div><br>
+        {{#if stats.model.stats.lastBlockFound}}
+        <div><i class="fa fa-clock-o"></i> Last Block Found: <span>{{format-relative (seconds-to-ms stats.model.stats.lastBlockFound)}}</span></div><br>
+		 <div><i class="fa fa-cubes"></i> Total Mined Blocks: <span>{{format-number model.maturedTotal}}</span></div><br>
+		<div><i class="fa fa-money"></i> Min. payout threshold: {{config.PayoutThreshold}}</div><br>
+		<div><i class="fa fa-gears"></i> Pool Type: <span class="label label-success">PROP</span></div><br>
+        {{/if}}
+      </div><br>
+  
+	  <div>
+	   <strong> Network Stats</strong><br><br>
+        <div><i class="fa fa-unlock-alt"></i> Network Difficulty: <span>{{with-metric-prefix stats.difficulty}}</span></div><br>
+        <div><i class="fa fa-tachometer"></i> Network Hash Rate: <span>{{format-hashrate stats.hashrate}}</span></div><br>
+        <div><i class="fa fa-bars"></i> Blockchain Height: <span>{{format-number stats.height}}</span></div><br>
+        <div><i class="fa fa-clock-o"></i> Current Round Variance: <span>{{format-number stats.roundVariance style='percent'}}</span></div><br>
+		<div><br><br></div><div><br><br></div>
+  </div>
+	</p>
+	</h5></td>
+	 &nbsp;&nbsp;
+	 <td>
+	 <h5 style="font-size: 14px" class="note note-info text-left">
+	 <p>
+	 <div>
+	 <strong>How to get started</strong><br><br>
+		
+	1. Get yourself a wallet - <a href="https://wallet.ethoprotocol.com/" rel="nofollow" target="_blank"><strong>Web Wallet</strong></a> or <a href="https://github.com/Ether1Project/Ether1DesktopWallet/releases" rel="nofollow" target="_blank"><strong>Desktop Wallet</strong></a><br>
+2. Download mining software - Most popular can be found here : <a href="https://github.com/todxx/teamredminer/releases" rel="nofollow" target="_blank"><strong>AMD</strong></a> or <a href="https://github.com/trexminer/T-Rex/releases" rel="nofollow" target="_blank"><strong>NVidia</strong></a><br>
+3. Edit .bat file<br>
+4. Set Overclocks<br>
+5. Start mining!<br><br>
+	
+<strong>Miner Settings</strong>	<br><br>
+	  AMD - TeamRedMiner<br>
+	  Teamredminer.exe -a ethash -o stratum+tcp://etho.club:8008 -u address -p x<br>
+	 <br>NVidia - T-REX Miner<br>
+	  T-rex.exe -a ethash -o stratum+tcp://etho.club:8008 -u address -w worker -p x <br>
+     
+	
+	</div>
+	</p>
+	</h5> <h5 style="font-size: 14px" class="note note-info text-left">
+	 
+	
+	<strong>Exchanges</strong><br>
+	  
+	  <h1 style="font-size: 18px" text-center> <a href="https://www.kucoin.com/ucenter/signup?rcode=tJbaPR" rel="nofollow" target="_blank"><img src="kucoin.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://app.stex.com?ref=69532535" rel="nofollow" target="_blank"><img src="stex.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.probit.com/r/41620787" rel="nofollow" target="_blank"><img src="probit.png"></a></h1><br><br>
+	 	 
+	 
+	
+	</h5>  
+	</td>
+	
+	  
+
+	</tr>
+</table>  
+	  
+	  	 <h5 class="note note-info text-center">
+	 {{#if config.highcharts.main.enabled}}
+  {{high-charts mode=chartMode chartOptions=chartOptions content=chartData}}
+  {{/if}}
+	</h5>
+	   <h5 class="note note-info text-center"><strong>Hashrate Rentals</strong><br>
+	  	  <h1 style="font-size: 18px"><a href="https://www.miningrigrentals.com?ref=2614689" rel="nofollow" target="_blank"><img src="mrr-6811df9b76773a71e87ba1d887c6c2c3.png"></a></h1> 
+    </h5>
+	
+
+	<p style="text-align:center;"><a href="https://discord.com/invite/ZuKnWgq722" rel="nofollow" target="_blank"><img src="discord2.png"></a></p><br><br><br><br>
+  </div>
+
+
+
+

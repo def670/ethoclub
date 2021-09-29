@@ -1,0 +1,33 @@
+<div class="container">
+<h5 class="note note-info text-left">   
+  {{#if model.payments}}
+  
+  <h4>Your Latest Payouts</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Tx ID</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model.payments as |tx|}}
+          <tr>
+            <td>{{format-date-locale tx.timestamp}}</td>
+            <td>
+              <a href="https://blocks.ethoprotocol.com/tx/{{tx.tx}}" class="hash" rel="nofollow" target="_blank">{{tx.tx}}</a>
+            </td>
+            <td>{{format-balance tx.amount}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{else}}
+  <h3>No payouts yet</h3>
+ {{/if}}
+</h5> </div>
+
+<br><br><br>
