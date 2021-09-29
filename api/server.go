@@ -1,7 +1,6 @@
 package api
 
 import (
-        "fmt"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -12,9 +11,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-        "github.com/robfig/cron"
 
-        "github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/storage"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -22,10 +19,6 @@ import (
 type ApiConfig struct {
 	Enabled              bool   `json:"enabled"`
 	Listen               string `json:"listen"`
-        PoolCharts           string `json:"poolCharts"`
-	PoolChartsNum        int64  `json:"poolChartsNum"`
-	MinerChartsNum       int64  `json:"minerChartsNum"`
-	MinerCharts          string `json:"minerCharts"`
 	StatsCollectInterval string `json:"statsCollectInterval"`
 	HashrateWindow       string `json:"hashrateWindow"`
 	HashrateLargeWindow  string `json:"hashrateLargeWindow"`
@@ -37,16 +30,14 @@ type ApiConfig struct {
 }
 
 type ApiServer struct {
-        settings            map[string]interface{}
 	config              *ApiConfig
 	backend             *storage.RedisClient
 	hashrateWindow      time.Duration
-
+	hashrateLargeWindow time.Duration
+	stats               atomic.Value
 	miners              map[string]*Entry
 	minersMu            sync.RWMutex
 	statsIntv           time.Duration
-	rpc                 *rpc.RPCClient
-	genesisHash         string
 }
 
 type Entry struct {
@@ -54,26 +45,15 @@ type Entry struct {
 	updatedAt int64
 }
 
-func NewApiServer(cfg *ApiConfig, settings map[string]interface{}, backend *storage.RedisClient) *ApiServer {
-	rpcDaemon := settings["BlockUnlocker"].(map[string]interface{})["Daemon"].(string)
-	rpcTimeout := settings["BlockUnlocker"].(map[string]interface{})["Timeout"].(string)
-	rpc := rpc.NewRPCClient("BlockUnlocker", rpcDaemon, rpcTimeout)
-	block, err := rpc.GetBlockByHeight(0)
-	if err != nil || block == nil {
-		log.Fatalf("Error while retrieving genesis block from node: %v", err)
-	}
-
+func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 	hashrateWindow := util.MustParseDuration(cfg.HashrateWindow)
 	hashrateLargeWindow := util.MustParseDuration(cfg.HashrateLargeWindow)
 	return &ApiServer{
-		settings:            settings,
 		config:              cfg,
 		backend:             backend,
 		hashrateWindow:      hashrateWindow,
 		hashrateLargeWindow: hashrateLargeWindow,
 		miners:              make(map[string]*Entry),
-		rpc:                 rpc,
-		genesisHash:         block.Hash,
 	}
 }
 
@@ -116,58 +96,8 @@ func (s *ApiServer) Start() {
 		}
 	}()
 
-	go func() {
-			c := cron.New()
-			poolCharts := s.config.PoolCharts
-			log.Printf("pool charts config is :%v", poolCharts)
-			c.AddFunc(poolCharts, func() {
-				s.collectPoolCharts()
-			})
-			minerCharts := s.config.MinerCharts
-			log.Printf("miner charts config is :%v", minerCharts)
-			c.AddFunc(minerCharts, func() {
-				miners, err := s.backend.GetAllMinerAccount()
-				if err != nil {
-					log.Println("Get all miners account error: ", err)
-				}
-				for _, login := range miners {
-					miner, _ := s.backend.CollectWorkersStats(s.hashrateWindow, s.hashrateLargeWindow, login)
-					s.collectMinerCharts(login, miner["currentHashrate"].(int64), miner["hashrate"].(int64), miner["workersOnline"].(int64))
-				}
-			})
-			c.Start()
-		}()
 	if !s.config.PurgeOnly {
 		s.listen()
-	}
-}
-
-func (s *ApiServer) collectPoolCharts() {
-	ts := util.MakeTimestamp() / 1000
-	now := time.Now()
-	year, month, day := now.Date()
-	hour, min, _ := now.Clock()
-	t2 := fmt.Sprintf("%d-%02d-%02d %02d_%02d", year, month, day, hour, min)
-	stats := s.getStats()
-	hash := fmt.Sprint(stats["hashrate"])
-	log.Println("Pool Hash is ", ts, t2, hash)
-	err := s.backend.WritePoolCharts(ts, t2, hash)
-	if err != nil {
-		log.Printf("Failed to fetch pool charts from backend: %v", err)
-		return
-	}
-}
-
-func (s *ApiServer) collectMinerCharts(login string, hash int64, largeHash int64, workerOnline int64) {
-	ts := util.MakeTimestamp() / 1000
-	now := time.Now()
-	year, month, day := now.Date()
-	hour, min, _ := now.Clock()
-	t2 := fmt.Sprintf("%d-%02d-%02d %02d_%02d", year, month, day, hour, min)
-	log.Println("Miner "+login+" Hash is", ts, t2, hash, largeHash)
-	err := s.backend.WriteMinerCharts(ts, t2, login, hash, largeHash, workerOnline)
-	if err != nil {
-		log.Printf("Failed to fetch miner %v charts from backend: %v", login, err)
 	}
 }
 
@@ -177,7 +107,6 @@ func (s *ApiServer) listen() {
 	r.HandleFunc("/api/miners", s.MinersIndex)
 	r.HandleFunc("/api/blocks", s.BlocksIndex)
 	r.HandleFunc("/api/payments", s.PaymentsIndex)
-        r.HandleFunc("/api/settings", s.Settings)
 	r.HandleFunc("/api/accounts/{login:0x[0-9a-fA-F]{40}}", s.AccountIndex)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 	err := http.ListenAndServe(s.config.Listen, r)
@@ -217,7 +146,6 @@ func (s *ApiServer) collectStats() {
 			return
 		}
 	}
-        stats["poolCharts"], err = s.backend.GetPoolCharts(s.config.PoolChartsNum)
 	s.stats.Store(stats)
 	log.Printf("Stats collection finished %s", time.Since(start))
 }
@@ -239,7 +167,6 @@ func (s *ApiServer) StatsIndex(w http.ResponseWriter, r *http.Request) {
 	if stats != nil {
 		reply["now"] = util.MakeTimestamp()
 		reply["stats"] = stats["stats"]
-                reply["poolCharts"] = stats["poolCharts"]
 		reply["hashrate"] = stats["hashrate"]
 		reply["minersTotal"] = stats["minersTotal"]
 		reply["maturedTotal"] = stats["maturedTotal"]
@@ -358,8 +285,6 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 			stats[key] = value
 		}
 		stats["pageSize"] = s.config.Payments
-		stats["minerCharts"], err = s.backend.GetMinerCharts(s.config.MinerChartsNum, login)
-		stats["paymentCharts"], err = s.backend.GetPaymentCharts(login)
 		reply = &Entry{stats: stats, updatedAt: now}
 		s.miners[login] = reply
 	}
@@ -370,33 +295,7 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error serializing API response: ", err)
 	}
 }
-func (s *ApiServer) Settings(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "max-age=600")
-	w.WriteHeader(http.StatusOK)
-	reply := make(map[string]interface{})
-	reply["HashLimit"] = s.settings["Proxy"].(map[string]interface{})["HashLimit"]
-	reply["Difficulty"] = s.settings["Proxy"].(map[string]interface{})["Difficulty"]
-	reply["PoolFee"] = s.settings["BlockUnlocker"].(map[string]interface{})["PoolFee"]
-	reply["PoolFeeAddress"] = s.settings["BlockUnlocker"].(map[string]interface{})["PoolFeeAddress"]
-	reply["Donate"] = s.settings["BlockUnlocker"].(map[string]interface{})["Donate"]
-	reply["DonateFee"] = s.settings["BlockUnlocker"].(map[string]interface{})["DonateFee"]
-	reply["DonateAddress"] = s.settings["BlockUnlocker"].(map[string]interface{})["DonateAddress"]
-	reply["KeyTxFees"] = s.settings["BlockUnlocker"].(map[string]interface{})["KeepTxFees"]
-	reply["BlockUnlockDepth"] = s.settings["BlockUnlocker"].(map[string]interface{})["Depth"]
-	reply["EthProxy"] = s.settings["Proxy"].(map[string]interface{})["Enabled"]
-	reply["EthProxyPool"] = s.settings["Proxy"].(map[string]interface{})["Listen"]
-	reply["Stratum"] = s.settings["Proxy"].(map[string]interface{})["Stratum"].(map[string]interface{})["Enabled"]
-	reply["StratumPool"] = s.settings["Proxy"].(map[string]interface{})["Stratum"].(map[string]interface{})["Listen"]
-	reply["PayoutThreshold"] = s.settings["Payouts"].(map[string]interface{})["Threshold"]
-	reply["PayoutInterval"] = s.settings["Payouts"].(map[string]interface{})["Interval"]
-	reply["GenesisHash"] = s.genesisHash
-	err := json.NewEncoder(w).Encode(reply)
-	if err != nil {
-		log.Println("Error serializing API response: ", err)
-	}
-}
+
 func (s *ApiServer) getStats() map[string]interface{} {
 	stats := s.stats.Load()
 	if stats != nil {
