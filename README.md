@@ -1,10 +1,10 @@
-## Open Source Xerom Mining Pool
+## Open Source Etho Mining Pool - tuned for 8000000 block hardfork on EthoProtocol blockchain.
 
 ![Miner's stats page](https://i.gyazo.com/f5361009debf4921a21f5fb3bd06b3b2.png)
 
 ### Features
 
-**This pool is being further developed to provide an easy to use pool for Ethereum miners. This software is functional however an optimised release of the pool is expected soon. Testing and bug submissions are welcome!**
+**This pool is being further developed to provide an easy to use pool for Etho miners. This software is functional however an optimised release of the pool is expected soon. Testing and bug submissions are welcome!**
 
 * Support for HTTP and Stratum mining
 * Detailed block stats with luck percentage and full reward
@@ -26,7 +26,7 @@ Dependencies:
 First of all let's get up to date and install the dependencies:
 
     sudo apt-get update && sudo apt-get dist-upgrade -y
-    sudo apt-get install build-essential make git screen unzip curl nginx -y
+    sudo apt-get install build-essential make git screen unzip curl nginx tcl -y
 
 Install GO:
 
@@ -40,9 +40,16 @@ Install GO:
 Clone & compile:
 
     git config --global http.https://gopkg.in.followRedirects true
-    git clone https://github.com/Exlo84/XeroDreamPool.git
-    cd XeroDreamPool
+    git clone https://github.com/def670/ethoclub.git
+    cd ethoclub
     make
+  after you have completed "make" you will need to do:
+    mv main.go main.go.old
+    mv main.go.0 main.go
+    cd api
+    mv server.go server.go.old
+    mv server.go.0 server.go
+  This will alter the two programs to add in the charts    
 
 Installing Redis latest version
 
@@ -50,37 +57,58 @@ Installing Redis latest version
     tar xvzf redis-stable.tar.gz
     cd redis-stable
     make
+    make test
+    sudo make install
     
-    sudo cp src/redis-server /usr/local/bin/
-    sudo cp src/redis-cli /usr/local/bin/
-        
     sudo mkdir /etc/redis
-    sudo mkdir /var/redis
-            
-    sudo cp utils/redis_init_script /etc/init.d/redis_6379
-    sudo cp redis.conf /etc/redis/6379.conf
-    sudo nano /etc/redis/6379.conf
+    sudo cp ~/redis-stable/redis.conf /etc/redis
+    sudo nano /etc/redis/redis.conf
     
-*Edit the configuration file, making sure to perform the following changes:
+# Set supervised to systemd
+  supervised systemd
+# Set the dir
+  dir /var/lib/redis
+**Create a Redis systemd Unit File
 
-* Set daemonize to yes (by default it is set to no).
-* Set the dir to /var/redis/6379 (very important step!)
+sudo nano /etc/systemd/system/redis.service
+Add
 
-Run
+[Unit]
+Description=Redis In-Memory Data Store
+After=network.target
 
-    sudo mkdir /var/redis/6379
-    sudo update-rc.d redis_6379 defaults
-    sudo /etc/init.d/redis_6379 start   
+[Service]
+User=redis
+Group=redis
+ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+**Create the Redis User, Group and Directories
+
+    sudo adduser --system --group --no-create-home redis
+    sudo mkdir /var/lib/redis
+    sudo chown redis:redis /var/lib/redis
+    sudo chmod 770 /var/lib/redis
+    Start and Test Redis
+    sudo systemctl start redis
+    sudo systemctl status redis
+    
+### Install nodejs
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    sudo apt-get install nodejs -y
     
 ### Install Geth
 
     cd ~
-    wget -N https://github.com/xero-official/go-xerom/releases/download/2.1.0/geth-linux.zip
-    unzip geth-linux.zip
-    rm geth-linux.zip
+    wget -N https://github.com/Ether1Project/Ether1/releases/download/V1.5.0/etho-linux-1.5.0.tar.gz
+    tar -zxvf etho-linux-1.5.0.tar.gz
+    rm etho-linux-1.5.0.tar.gz
     sudo mv geth /usr/local/bin/geth 
 
-Make geth system sercive
+Make geth system service
 
     sudo nano /etc/systemd/system/geth.service
     
@@ -111,11 +139,17 @@ Register pool account and open wallet for transaction. This process is always re
 
     personal.newAccount()
     personal.unlockAccount(eth.accounts[0],"password",40000000)
+ or alternatly - if you have existing ethbase keystore files you can put them into ~/.ether1/keystore/ then you will be able to use geth attach with the personal unlock above with your password where "password" is.  
 
 ### Set up pool
+check out the config.examples directory for a couple different setup styles.
+you can use "all.json" to start all the pool services,
+or your can use "api.json, pool.json, payout.json, and unlocker.json" (all called individually) to run as 4 parts. (this way you can restart parts that need restarting without having to restart the whole pool).  
+Also see the setup as a service section below - this works with either method... however do not do service setups for all 5 of the examples - either all.json or the other 4.  If all 5 are running services then your pool will bork for sure.
 
-    mv config.example.json config.json
-    nano config.json
+    cd config.examples/           <--these config files are adjusted to work with charts.  example.config.json in the root directory is not.
+    nano all.json                 <--adjust your desired ports and IPs
+    cp all.json ../build/bin/     <--MAKE BACKUPS of your config files - this directory will be overwritten if you do "make" on the pool again...YOU ARE WARNED!
 
 Make pool system service
 
@@ -123,21 +157,23 @@ Make pool system service
 
 Copy the following
 
-    [Unit]
-    Description=Xeropool
-    After=geth.target
-    
-    [Service]
-    ExecStart=/home/<name>/XeroDreamPool/build/bin/open-ethereum-pool /home/<name>/XeroDreamPool/build/bin/config.json
-    
-    [Install]
-    WantedBy=multi-user.target
+[Unit]
+Description=Ethoclub Pool
+After=geth.target
 
+[Service]
+ExecStart=/home/<name>/ethoclub/build/bin/open-ethereum-pool /home/<name>/ethoclub/all.json
+
+[Install]
+WantedBy=multi-user.target
 Then run pool by the following commands
 
-    sudo systemctl enable pool
-    sudo systemctl start pool
-    sudo systemctl status pool
+    sudo systemctl enable all.service   <--enables system to control pool - will automatically restart if computer rebooted
+    sudo systemctl start all.service    <--starts the service
+    sudo systemctl status all.service   <--shows status of the service
+    sudo systemctl stop all.service     <--stops the service
+    sudo systemctl restart all.service  <--restarts the service
+    sudo systemctl disable all.service  <--disables system control of service - will NOT automatically restart when rebooted
 
 ### Building Frontend
 
@@ -145,19 +181,17 @@ Then run pool by the following commands
 
 Modify your configuration file
 
-    nano ~/XeroDreamPool/www/config/environment.js
+    nano ~/ethoclub/www/config/environment.js
 
 Create frontend
 
-    cd ~/XeroDreamPool/www/
+    cd ~/ethoclub/www/
     
-    sudo npm install -g ember-cli@2.9.1
     sudo npm install -g bower
     sudo chown -R $USER:$GROUP ~/.npm
     sudo chown -R $USER:$GROUP ~/.config
     npm install
     bower install
-    npm i intl-format-cache
     ./build.sh
 
 
@@ -215,5 +249,8 @@ Made by sammy007. Licensed under GPLv3.
 
 #### Contributors
 
-[Alex Leverington](https://github.com/subtly)
+[Alex Leverington]
 [Primate411](https://github.com/Primate411/)
+[Exlo84](https://github.com/Exlo84/)
+[Don Kingdon](https://github.com/def670/)
+[KJ](https://etho.club)
