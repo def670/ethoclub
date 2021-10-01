@@ -43,12 +43,15 @@ Clone & compile:
     git clone https://github.com/def670/ethoclub.git
     cd ethoclub
     make
+    
   after you have completed "make" you will need to do:
+
     mv main.go main.go.old
     mv main.go.0 main.go
     cd api
     mv server.go server.go.old
     mv server.go.0 server.go
+    
   This will alter the two programs to add in the charts    
 
 Installing Redis latest version
