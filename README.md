@@ -1,6 +1,6 @@
 ## Open Source Etho Mining Pool - tuned for 8000000 block hardfork on EthoProtocol blockchain.
 image to be updated soon!
-![Miner's stats page](https://i.gyazo.com/f5361009debf4921a21f5fb3bd06b3b2.png)
+![Miner's stats page](https://gyazo.com/f87ea01f762647fa3de95083e686d2c5.png)
 
 ### Features
 
