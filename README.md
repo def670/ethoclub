@@ -71,9 +71,11 @@ Installing Redis latest version
   supervised systemd
 # Set the dir
   dir /var/lib/redis
+  
 **Create a Redis systemd Unit File
 
-sudo nano /etc/systemd/system/redis.service
+  sudo nano /etc/systemd/system/redis.service
+
 Add
 
 [Unit]
@@ -89,6 +91,7 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+
 **Create the Redis User, Group and Directories
 
     sudo adduser --system --group --no-create-home redis
@@ -255,5 +258,5 @@ Made by sammy007. Licensed under GPLv3.
 [Alex Leverington]
 [Primate411](https://github.com/Primate411/)
 [Exlo84](https://github.com/Exlo84/)
-[Don Kingdon](https://github.com/def670/)
+[def](https://github.com/def670/)
 [KJ](https://etho.club)
