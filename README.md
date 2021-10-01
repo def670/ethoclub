@@ -67,9 +67,9 @@ Installing Redis latest version
     sudo cp ~/redis-stable/redis.conf /etc/redis
     sudo nano /etc/redis/redis.conf
     
-# Set supervised to systemd
+ Set supervised to systemd
   supervised systemd
-# Set the dir
+ Set the dir
   dir /var/lib/redis
   
 **Create a Redis systemd Unit File
@@ -78,19 +78,20 @@ Installing Redis latest version
 
 Add
 
-[Unit]
-Description=Redis In-Memory Data Store
-After=network.target
+    [Unit]
+    Description=Redis In-Memory Data Store
+    After=network.target
 
-[Service]
-User=redis
-Group=redis
-ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
-ExecStop=/usr/local/bin/redis-cli shutdown
-Restart=always
+    [Service]
+    User=redis
+    Group=redis
+    ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+    ExecStop=/usr/local/bin/redis-cli shutdown
+    Restart=always
 
-[Install]
-WantedBy=multi-user.target
+    [Install]
+    WantedBy=multi-user.target
+
 
 **Create the Redis User, Group and Directories
 
