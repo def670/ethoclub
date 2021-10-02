@@ -68,8 +68,11 @@ Installing Redis latest version
     sudo nano /etc/redis/redis.conf
     
  Set supervised to systemd
+ 
   supervised systemd
+  
  Set the dir
+ 
   dir /var/lib/redis
   
 **Create a Redis systemd Unit File
