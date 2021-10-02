@@ -69,11 +69,11 @@ Installing Redis latest version
     
  Set supervised to systemd
  
-  supervised systemd
+    supervised systemd
   
  Set the dir
  
-  dir /var/lib/redis
+    dir /var/lib/redis
   
 **Create a Redis systemd Unit File
 
