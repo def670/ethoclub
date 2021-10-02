@@ -26,7 +26,7 @@ Dependencies:
 First of all let's get up to date and install the dependencies:
 
     sudo apt-get update && sudo apt-get dist-upgrade -y
-    sudo apt-get install build-essential make git screen unzip curl nginx tcl -y
+    sudo apt-get install build-essential make git screen unzip curl nginx pkg-config tcl -y
 
 Install GO:
 
