@@ -102,7 +102,9 @@ Add
     sudo mkdir /var/lib/redis
     sudo chown redis:redis /var/lib/redis
     sudo chmod 770 /var/lib/redis
-    Start and Test Redis
+    
+Start and Test Redis
+    
     sudo systemctl start redis
     sudo systemctl status redis
     
