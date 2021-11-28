@@ -37,6 +37,11 @@ Install GO:
     export GOROOT=/usr/local/go
     export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
+### Install Node.js
+
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    sudo apt-get install nodejs -y
+
 Clone & compile:
 
     git config --global http.https://gopkg.in.followRedirects true
