@@ -120,9 +120,9 @@ Start and Test Redis
 ### Install Geth
 
     cd ~
-    wget -N https://github.com/Ether1Project/Ether1/releases/download/V1.5.0/etho-linux-1.5.0.tar.gz
-    tar -zxvf etho-linux-1.5.0.tar.gz
-    rm etho-linux-1.5.0.tar.gz
+    wget -N https://github.com/Ether1Project/Ether1/releases/download/V1.5.3/etho-linux-1.5.3.tar.gz
+    tar -zxvf etho-linux-1.5.3.tar.gz
+    rm etho-linux-1.5.3.tar.gz
     sudo mv geth /usr/local/bin/geth 
 
 Make geth system service
@@ -225,7 +225,7 @@ Delete everything in the file and replace it with the text below.
 Be sure to change with your info
 
     upstream api {
-            server 127.0.0.1:8080;
+            server 127.0.0.1:8090;
     }
     
     server {
