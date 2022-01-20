@@ -39,7 +39,7 @@ Install GO:
 
 ### Install Node.js
 
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
     sudo apt-get install nodejs -y
 
 Clone & compile:
@@ -112,10 +112,6 @@ Start and Test Redis
     
     sudo systemctl start redis
     sudo systemctl status redis
-    
-### Install nodejs
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    sudo apt-get install nodejs -y
     
 ### Install Geth
 
