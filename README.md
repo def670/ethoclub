@@ -119,7 +119,7 @@ Start and Test Redis
     wget -N https://github.com/Ether1Project/Ether1/releases/download/V1.5.3/etho-linux-1.5.3.tar.gz
     tar -zxvf etho-linux-1.5.3.tar.gz
     rm etho-linux-1.5.3.tar.gz
-    sudo mv geth /usr/local/bin/geth 
+    sudo mv geth /usr/local/bin/
 
 Make geth system service
 
