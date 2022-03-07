@@ -186,7 +186,8 @@ Then run pool by the following commands
     sudo systemctl start all.service    <--starts the service
     sudo systemctl status all.service   <--shows status of the service
 
-These options are available as well:
+These options are available as well
+
     sudo systemctl stop all.service     <--stops the service
     sudo systemctl restart all.service  <--restarts the service
     sudo systemctl disable all.service  <--disables system control of service - will NOT automatically restart when rebooted
