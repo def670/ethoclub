@@ -170,15 +170,16 @@ Make pool system service
 
 Copy the following
 
-[Unit]
-Description=Ethoclub Pool
-After=geth.target
+     [Unit]
+     Description=Ethoclub Pool
+     After=geth.target
 
-[Service]
-ExecStart=/home/<name>/ethoclub/build/bin/open-ethereum-pool /home/<name>/ethoclub/all.json
+     [Service]
+     ExecStart=/home/<name>/ethoclub/build/bin/open-ethereum-pool /home/<name>/ethoclub/all.json
 
-[Install]
-WantedBy=multi-user.target
+     [Install]
+     WantedBy=multi-user.target
+     
 Then run pool by the following commands
 
     sudo systemctl enable all.service   <--enables system to control pool - will automatically restart if computer rebooted
