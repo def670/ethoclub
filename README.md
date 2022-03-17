@@ -30,9 +30,9 @@ First of all let's get up to date and install the dependencies:
 
 Install GO:
 
-    wget https://storage.googleapis.com/golang/go1.14.2.linux-amd64.tar.gz
-    tar -xvf go1.14.2.linux-amd64.tar.gz
-    rm go1.14.2.linux-amd64.tar.gz
+    wget https://storage.googleapis.com/golang/go1.16.9.linux-amd64.tar.gz
+    tar -xvf go1.16.9.linux-amd64.tar.gz
+    rm go1.16.9.linux-amd64.tar.gz
     sudo mv go /usr/local
     export GOROOT=/usr/local/go
     export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
