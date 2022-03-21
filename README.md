@@ -116,9 +116,9 @@ Start and Test Redis
 ### Install Geth
 
     cd ~
-    wget -N https://github.com/Ether1Project/Ether1/releases/download/V1.5.3/etho-linux-1.5.3.tar.gz
-    tar -zxvf etho-linux-1.5.3.tar.gz
-    rm etho-linux-1.5.3.tar.gz
+    wget -N https://github.com/Ether1Project/Ether1/releases/download/V2.0.0/etho-linux-2.0.0.tar.gz
+    tar -zxvf etho-linux-2.0.0.tar.gz
+    rm etho-linux-2.0.0.tar.gz
     sudo mv geth /usr/local/bin/
 
 Make geth system service
@@ -132,7 +132,7 @@ Copy the following
     After=network-online.target
     
     [Service]
-    ExecStart=/usr/local/bin/geth --rpc --rpcaddr 127.0.0.1 --rpcport 8545 --syncmode "fast" --etherbase <your-address> --mine --extradata "<your-pool>"
+    ExecStart=/usr/local/bin/geth --http --http.addr 127.0.0.1 --http.port 8545 --syncmode "fast" --miner.etherbase <your-address> --mine --identity "<your-pool>"
     User=<your-user-name>
     
     [Install]
