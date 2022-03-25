@@ -17,10 +17,10 @@ image to be updated soon!
 
 Dependencies:
 
-  * go >= 1.9
+  * go >= 1.16.9
   * geth or parity
   * redis-server >= 2.8.0
-  * nodejs >= 4 LTS
+  * nodejs >= 14
   * nginx
 
 First of all let's get up to date and install the dependencies:
