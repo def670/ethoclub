@@ -231,7 +231,7 @@ Be sure to change with your info
     server {
       listen 80 default_server;
       listen [::]:80 default_server;
-      root /home/<name>/XeroDreamPool/www/dist;
+      root /home/<name>/ethoclub/www/dist;
      
      index index.html index.htm index.nginx-debian.html;
      
