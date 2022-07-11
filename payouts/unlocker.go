@@ -29,10 +29,10 @@ type UnlockerConfig struct {
 }
 
 const minDepth = 16
-const BerlinBlock = 9000000
+const byzantiumHardForkHeight = 8725000
 
-var PhoenixForkBlock = math.MustParseBig256("300000000000000000")
-var BerlinBlock = math.MustParseBig256("300000000000000000")
+var homesteadReward = math.MustParseBig256("300000000000000000")
+var byzantiumReward = math.MustParseBig256("300000000000000000")
 
 // Donate 5% from pool fees to developers
 const donationFee = 5.0
