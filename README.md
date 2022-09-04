@@ -116,7 +116,7 @@ Start and Test Redis
 ### Install Geth
 
     cd ~
-    wget -N https://github.com/Ether1Project/Ether1/releases/download/V2.1.0/etho-linux-2.1.0.tar.gz
+    wget -N https://github.com/Ether1Project/Ether1/releases/tag/V2.1.0/etho-linux-2.1.0.tar.gz
     tar -zxvf etho-linux-2.1.0.tar.gz
     rm etho-linux-2.1.0.tar.gz
     sudo mv geth /usr/local/bin/
